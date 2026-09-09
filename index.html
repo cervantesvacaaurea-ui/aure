@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AUREA — Belleza que inspira</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,450;0,9..144,600;1,9..144,450&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FBF6F1;
+    --paper:#FFFDFB;
+    --ink:#2A1B1F;
+    --wine:#6E1E32;
+    --wine-deep:#4A121F;
+    --gold:#A6813C;
+    --rose:#EFDDD6;
+    --muted:#8B7A76;
+    --line: rgba(42,27,31,0.12);
+    --radius: 3px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto;} *{animation-duration:0.01ms !important; transition-duration:0.01ms !important;} }
+
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Work Sans', sans-serif;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.serif{ font-family:'Fraunces', serif; font-weight:450; margin:0; }
+  a{color:inherit;}
+  button, input{ font-family:inherit; }
+  :focus-visible{ outline:2px solid var(--wine); outline-offset:3px; }
+
+  .wrap{ max-width:1140px; margin:0 auto; padding:0 28px; }
+
+  /* NAV */
+  header{
+    position:sticky; top:0; z-index:50;
+    background:rgba(251,246,241,0.92);
+    backdrop-filter: blur(6px);
+    border-bottom:1px solid var(--line);
+  }
+  nav.wrap{
+    display:flex; align-items:center; justify-content:space-between;
+    padding-top:18px; padding-bottom:18px;
+    gap:20px; flex-wrap:wrap;
+  }
+  .logo{ font-family:'Fraunces', serif; font-size:1.5rem; letter-spacing:0.02em; }
+  .navlinks{ display:flex; gap:28px; flex-wrap:wrap; }
+  .navlinks a{
+    text-decoration:none; font-size:0.92rem; color:var(--ink);
+    border-bottom:1px solid transparent; padding-bottom:3px;
+  }
+  .navlinks a:hover{ border-bottom-color:var(--wine); }
+
+  /* HERO */
+  .hero{ padding:64px 0 40px; }
+  .hero-grid{
+    display:grid; grid-template-columns: 1.1fr 0.9fr; gap:56px; align-items:center;
+  }
+  .eyebrow{ color:var(--wine); font-size:0.85rem; margin-bottom:14px; }
+  .hero h1{ font-size:clamp(2.6rem, 5vw, 4.2rem); line-height:1.02; }
+  .hero p.lead{ margin-top:20px; max-width:46ch; color:#4d3a3e; font-size:1.05rem; }
+  .cta-row{ display:flex; gap:16px; margin-top:32px; flex-wrap:wrap; }
+  .btn{
+    display:inline-block; padding:13px 26px; border-radius:var(--radius);
+    text-decoration:none; font-size:0.92rem; cursor:pointer; border:1px solid var(--ink);
+    background:var(--ink); color:var(--paper); transition: background 0.15s, color 0.15s, border-color .15s;
+  }
+  .btn:hover{ background:var(--wine-deep); border-color:var(--wine-deep); }
+  .btn.ghost{ background:transparent; color:var(--ink); border-color:var(--ink); }
+  .btn.ghost:hover{ background:var(--ink); color:var(--paper); }
+  .btn:disabled{ opacity:0.5; cursor:not-allowed; background:var(--muted); border-color:var(--muted); }
+  .hero-img{ width:100%; aspect-ratio: 4/5; object-fit:cover; border-radius:2px; }
+
+  section{ padding:72px 0; border-top:1px solid var(--line); }
+  .section-head{ max-width:60ch; margin-bottom:40px; }
+  .section-head .kicker{ color:var(--wine); font-size:0.85rem; margin-bottom:10px; }
+  .section-head h2{ font-size:clamp(1.8rem, 3vw, 2.5rem); }
+  .section-head p{ color:var(--muted); margin-top:12px; }
+
+  /* PRODUCT GRID */
+  .cat-tabs{ display:flex; gap:10px; margin-bottom:28px; flex-wrap:wrap; }
+  .cat-tab{
+    padding:8px 18px; border:1px solid var(--line); border-radius:20px;
+    background:var(--paper); font-size:0.88rem; cursor:pointer;
+  }
+  .cat-tab[aria-pressed="true"]{ background:var(--ink); color:var(--paper); border-color:var(--ink); }
+
+  .product-grid{ display:grid; grid-template-columns:repeat(3, 1fr); gap:1px; background:var(--line); border:1px solid var(--line); }
+  .product-card{ background:var(--paper); padding:26px; display:flex; flex-direction:column; gap:10px; }
+  .swatch{ width:34px; height:6px; border-radius:3px; }
+  .swatch.cabello{ background:var(--gold); }
+  .swatch.piel{ background:#C9A9AE; }
+  .swatch.maquillaje{ background:var(--wine); }
+  .product-card h3{ font-size:1.08rem; font-weight:500; }
+  .product-card .desc{ color:var(--muted); font-size:0.88rem; flex-grow:1; }
+  .product-row{ display:flex; align-items:baseline; justify-content:space-between; margin-top:6px; }
+  .price{ font-family:'Fraunces', serif; font-size:1.15rem; color:var(--wine-deep); }
+  .cat-label{ font-size:0.76rem; color:var(--muted); text-transform:none; }
+
+  /* BUDGET */
+  .budget-panel{
+    background:var(--paper); border:1px solid var(--line); padding:36px;
+    display:grid; grid-template-columns: 320px 1fr; gap:36px;
+  }
+  .field label{ display:block; font-size:0.88rem; margin-bottom:8px; color:var(--muted); }
+  .amount-input{
+    display:flex; align-items:center; border:1px solid var(--ink); border-radius:var(--radius);
+    padding:4px 4px 4px 16px; background:var(--paper);
+  }
+  .amount-input span{ color:var(--muted); font-size:0.95rem; margin-right:6px; }
+  .amount-input input{
+    border:none; outline:none; font-size:1.4rem; padding:10px 0; width:100%;
+    font-family:'Fraunces', serif; background:transparent; color:var(--ink);
+  }
+  .budget-panel .btn{ margin-top:16px; width:100%; text-align:center; }
+  #budgetResults{ min-height:60px; }
+  .empty-note{ color:var(--muted); font-size:0.92rem; }
+  .combo-card{ border:1px solid var(--line); padding:20px; margin-bottom:14px; background:var(--bg); }
+  .combo-card h4{ font-family:'Fraunces', serif; font-weight:450; font-size:1.05rem; margin-bottom:10px; }
+  .combo-items{ display:flex; flex-direction:column; gap:6px; font-size:0.9rem; }
+  .combo-item{ display:flex; justify-content:space-between; }
+  .combo-total{ display:flex; justify-content:space-between; margin-top:10px; padding-top:10px; border-top:1px dashed var(--line); font-weight:600; }
+  .single-list{ display:flex; flex-wrap:wrap; gap:8px; }
+  .single-list span{
+    border:1px solid var(--line); padding:6px 12px; border-radius:20px; font-size:0.84rem; background:var(--bg);
+  }
+
+  /* LOOK IA */
+  .look-panel{ display:grid; grid-template-columns: 1fr 1fr; gap:48px; align-items:start; }
+  .upload-box{
+    border:1px dashed var(--muted); padding:26px; text-align:center; background:var(--paper);
+    display:flex; flex-direction:column; align-items:center; gap:12px;
+  }
+  .upload-box img{ max-width:100%; max-height:260px; border-radius:2px; object-fit:cover; }
+  .upload-box .hint{ color:var(--muted); font-size:0.85rem; }
+  .file-btns{ display:flex; gap:10px; flex-wrap:wrap; justify-content:center; }
+  input[type="file"]{ display:none; }
+  .look-field{ margin-top:20px; }
+  .look-field label{ display:block; font-size:0.88rem; margin-bottom:8px; color:var(--muted); }
+  .look-field input[type="text"], .look-field input[type="number"]{
+    width:100%; border:1px solid var(--ink); border-radius:var(--radius); padding:12px 14px;
+    font-size:0.98rem; background:var(--paper); color:var(--ink);
+  }
+  .event-chips{ display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
+  .event-chip{
+    border:1px solid var(--line); padding:6px 14px; border-radius:20px; font-size:0.82rem;
+    background:var(--paper); cursor:pointer;
+  }
+  .event-chip:hover{ border-color:var(--wine); }
+
+  .result-panel{
+    border:1px solid var(--line); background:var(--paper); padding:30px; min-height:320px;
+    display:flex; flex-direction:column; gap:18px;
+  }
+  .result-placeholder{ margin:auto; text-align:center; color:var(--muted); font-size:0.92rem; max-width:32ch; }
+  .spinner{
+    width:26px; height:26px; border:2px solid var(--line); border-top-color:var(--wine);
+    border-radius:50%; margin:auto; animation:spin 0.8s linear infinite;
+  }
+  @keyframes spin{ to{ transform:rotate(360deg); } }
+  .result-diag{ font-family:'Fraunces', serif; font-size:1.15rem; line-height:1.4; }
+  .result-products{ display:flex; flex-direction:column; gap:12px; }
+  .result-product{
+    display:flex; justify-content:space-between; gap:16px; border-bottom:1px solid var(--line); padding-bottom:12px;
+  }
+  .result-product .name{ font-weight:500; }
+  .result-product .reason{ color:var(--muted); font-size:0.86rem; margin-top:3px; }
+  .result-total{ display:flex; justify-content:space-between; font-weight:600; padding-top:6px; }
+  .result-tip{ background:var(--bg); border-left:3px solid var(--gold); padding:12px 16px; font-size:0.9rem; }
+  .error-note{ color:var(--wine-deep); font-size:0.9rem; }
+  .disclaimer{ font-size:0.78rem; color:var(--muted); margin-top:26px; }
+
+  footer{ border-top:1px solid var(--line); padding:48px 0; }
+  .foot-grid{ display:flex; justify-content:space-between; flex-wrap:wrap; gap:24px; align-items:center; }
+  .foot-grid p{ color:var(--muted); font-size:0.85rem; }
+
+  @media (max-width: 860px){
+    .hero-grid{ grid-template-columns:1fr; }
+    .hero-img{ order:-1; aspect-ratio:16/10; }
+    .product-grid{ grid-template-columns:1fr 1fr; }
+    .budget-panel{ grid-template-columns:1fr; }
+    .look-panel{ grid-template-columns:1fr; }
+  }
+  @media (max-width: 540px){
+    .product-grid{ grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="wrap">
+    <div class="logo">Aurea</div>
+    <div class="navlinks">
+      <a href="#catalogo">Catálogo</a>
+      <a href="#presupuesto">Calculadora</a>
+      <a href="#look">Prueba tu look</a>
+    </div>
+  </nav>
+</header>
+
+<section class="hero" style="border-top:none;">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow">Santa Cruz de la Sierra · Nueva colección 2026</div>
+      <h1>Belleza que<br>inspira.</h1>
+      <p class="lead">Cabello, piel y maquillaje AUREA. Elige lo que se ajusta a tu presupuesto y descubre, con ayuda de una asesora virtual, el look ideal para cada ocasión.</p>
+      <div class="cta-row">
+        <a class="btn" href="#presupuesto">Calcular mi presupuesto</a>
+        <a class="btn ghost" href="#look">Probar mi look con IA</a>
+      </div>
+    </div>
+    <img class="hero-img" src="https://aurea-scz.lovable.app/assets/hero-ygjP9cXo.jpg" alt="Modelo AUREA con piel luminosa y labios en tono vino">
+  </div>
+</section>
+
+<!-- CATALOGO -->
+<section id="catalogo">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">Nuestros productos</div>
+      <h2>El catálogo completo AUREA.</h2>
+      <p>Cabello, piel y color en una sola colección. Precios en bolivianos.</p>
+    </div>
+    <div class="cat-tabs" id="catTabs">
+      <button class="cat-tab" data-cat="todos" aria-pressed="true">Todos</button>
+      <button class="cat-tab" data-cat="cabello" aria-pressed="false">Cabello</button>
+      <button class="cat-tab" data-cat="piel" aria-pressed="false">Piel</button>
+      <button class="cat-tab" data-cat="maquillaje" aria-pressed="false">Maquillaje</button>
+    </div>
+    <div class="product-grid" id="productGrid"></div>
+  </div>
+</section>
+
+<!-- PRESUPUESTO -->
+<section id="presupuesto">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">Calculadora</div>
+      <h2>¿Qué puedo comprar con lo que tengo?</h2>
+      <p>Ingresa el monto que quieres invertir y te mostramos combinaciones de productos AUREA que se ajustan a tu presupuesto.</p>
+    </div>
+    <div class="budget-panel">
+      <div>
+        <div class="field">
+          <label for="budgetInput">Monto disponible</label>
+          <div class="amount-input">
+            <span>Bs.</span>
+            <input type="number" id="budgetInput" placeholder="250" min="0" inputmode="decimal">
+          </div>
+        </div>
+        <button class="btn" id="budgetBtn">Ver qué puedo comprar</button>
+      </div>
+      <div id="budgetResults">
+        <p class="empty-note">Ingresa un monto para ver las combinaciones sugeridas y los productos individuales que alcanzas a comprar.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LOOK IA -->
+<section id="look">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">Asesora de estilo</div>
+      <h2>Prueba tu look para cualquier ocasión.</h2>
+      <p>Sube o toma una foto, dinos el evento — matrimonio, fiesta, oficina, cita — y una IA te recomienda un look o renovación con productos AUREA.</p>
+    </div>
+
+    <div class="look-panel">
+      <div>
+        <div class="upload-box" id="uploadBox">
+          <img id="previewImg" style="display:none;" alt="Vista previa de la foto subida">
+          <div id="uploadHint">
+            <div class="hint">Formatos JPG o PNG. Tu foto solo se usa para esta recomendación.</div>
+          </div>
+          <div class="file-btns">
+            <button class="btn ghost" id="btnCamera">Tomar una foto</button>
+            <button class="btn ghost" id="btnGallery">Subir imagen</button>
+          </div>
+          <input type="file" id="fileCamera" accept="image/*" capture="user">
+          <input type="file" id="fileGallery" accept="image/*">
+        </div>
+
+        <div class="look-field">
+          <label for="eventInput">¿Cuál es la ocasión?</label>
+          <input type="text" id="eventInput" placeholder="Ej: matrimonio de día, primera cita, entrevista de trabajo...">
+          <div class="event-chips">
+            <button class="event-chip" data-event="Matrimonio de noche">Matrimonio</button>
+            <button class="event-chip" data-event="Fiesta con amigas">Fiesta</button>
+            <button class="event-chip" data-event="Oficina, look de trabajo">Oficina</button>
+            <button class="event-chip" data-event="Cita romántica">Cita</button>
+            <button class="event-chip" data-event="Graduación">Graduación</button>
+          </div>
+        </div>
+
+        <div class="look-field">
+          <label for="looksBudget">Presupuesto para el look (opcional)</label>
+          <input type="number" id="looksBudget" placeholder="Bs. 300" min="0" inputmode="decimal">
+        </div>
+
+        <button class="btn" id="lookBtn" style="margin-top:22px; width:100%; text-align:center;" disabled>Generar mi recomendación</button>
+      </div>
+
+      <div class="result-panel" id="resultPanel">
+        <p class="result-placeholder">Sube tu foto y cuéntanos la ocasión. Aquí aparecerá tu look sugerido con productos AUREA y el porqué de cada elección.</p>
+      </div>
+    </div>
+    <p class="disclaimer">La recomendación es generada por IA con fines inspiracionales, no reemplaza la asesoría de una maquilladora profesional. Tu foto se procesa solo para esta sesión y no se almacena.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot-grid">
+    <div class="logo">Aurea</div>
+    <p>© 2026 AUREA — Belleza que inspira, oportunidades que crecen.</p>
+  </div>
+</footer>
+
+<script>
+// ---------- CATÁLOGO ----------
+const PRODUCTS = [
+  { id:'h1', cat:'cabello', name:'Sérum Reparador AUREA Hair', desc:'Repara puntas abiertas y sella la fibra capilar.', price:165 },
+  { id:'h2', cat:'cabello', name:'Shampoo Nutritivo AUREA Hair', desc:'Limpieza suave para cabello reseco o tratado.', price:89 },
+  { id:'h3', cat:'cabello', name:'Acondicionador Sellador', desc:'Desenreda y aporta brillo espejo.', price:92 },
+  { id:'h4', cat:'cabello', name:'Mascarilla Brillo Espejo', desc:'Tratamiento semanal intensivo de nutrición.', price:145 },
+  { id:'h5', cat:'cabello', name:'Aceite de Argán AUREA', desc:'Finalizador ligero, controla el frizz.', price:110 },
+  { id:'h6', cat:'cabello', name:'Spray Protector de Calor', desc:'Protege antes de planchas y secadoras.', price:78 },
+  { id:'p1', cat:'piel', name:'Crema Hidratante Luminosa', desc:'Hidratación diaria con efecto luminoso.', price:135 },
+  { id:'p2', cat:'piel', name:'Sérum Vitamina C', desc:'Ilumina el tono y unifica la piel.', price:175 },
+  { id:'p3', cat:'piel', name:'Limpiador Facial Suave', desc:'Limpieza diaria sin resecar.', price:68 },
+  { id:'p4', cat:'piel', name:'Contorno de Ojos Antiedad', desc:'Reduce líneas finas y ojeras.', price:158 },
+  { id:'p5', cat:'piel', name:'Protector Solar FPS50', desc:'Protección diaria, acabado natural.', price:98 },
+  { id:'p6', cat:'piel', name:'Mascarilla de Arcilla Rosa', desc:'Purifica y minimiza poros.', price:72 },
+  { id:'m1', cat:'maquillaje', name:'Labial Vino Satinado', desc:'El tono icónico AUREA, acabado satinado.', price:85 },
+  { id:'m2', cat:'maquillaje', name:'Base Luminosa Cobertura Media', desc:'Piel pareja con acabado natural.', price:148 },
+  { id:'m3', cat:'maquillaje', name:'Rubor en Crema', desc:'Efecto sonrojo natural, fácil de difuminar.', price:79 },
+  { id:'m4', cat:'maquillaje', name:'Paleta de Sombras Esenciales', desc:'Tonos neutros para día y noche.', price:165 },
+  { id:'m5', cat:'maquillaje', name:'Máscara de Pestañas Volumen', desc:'Volumen sin grumos, larga duración.', price:69 },
+  { id:'m6', cat:'maquillaje', name:'Iluminador Líquido', desc:'Efecto piel de cristal en pómulos.', price:95 },
+];
+const CAT_LABEL = { cabello:'Cabello', piel:'Piel', maquillaje:'Maquillaje' };
+const fmt = (n) => 'Bs. ' + n.toFixed(0);
+
+function renderGrid(filter){
+  const grid = document.getElementById('productGrid');
+  grid.innerHTML = '';
+  PRODUCTS.filter(p => filter === 'todos' || p.cat === filter).forEach(p => {
+    const card = document.createElement('div');
+    card.className = 'product-card';
+    card.innerHTML = `
+      <div class="swatch ${p.cat}"></div>
+      <div class="cat-label">${CAT_LABEL[p.cat]}</div>
+      <h3>${p.name}</h3>
+      <div class="desc">${p.desc}</div>
+      <div class="product-row"><span class="price">${fmt(p.price)}</span></div>
+    `;
+    grid.appendChild(card);
+  });
+}
+renderGrid('todos');
+document.getElementById('catTabs').addEventListener('click', (e) => {
+  const btn = e.target.closest('.cat-tab');
+  if(!btn) return;
+  document.querySelectorAll('.cat-tab').forEach(b => b.setAttribute('aria-pressed','false'));
+  btn.setAttribute('aria-pressed','true');
+  renderGrid(btn.dataset.cat);
+});
+
+// ---------- CALCULADORA DE PRESUPUESTO ----------
+function bestCombo(budget){
+  const byCat = {
+    cabello: PRODUCTS.filter(p=>p.cat==='cabello'),
+    piel: PRODUCTS.filter(p=>p.cat==='piel'),
+    maquillaje: PRODUCTS.filter(p=>p.cat==='maquillaje'),
+  };
+  let best = null;
+  for(const h of byCat.cabello){
+    for(const p of byCat.piel){
+      for(const m of byCat.maquillaje){
+        const total = h.price + p.price + m.price;
+        if(total <= budget && (!best || total > best.total)){
+          best = { items:[h,p,m], total };
+        }
+      }
+    }
+  }
+  if(best) return best;
+  // fallback: 2 categorías
+  const pairs = [['cabello','piel'],['cabello','maquillaje'],['piel','maquillaje']];
+  for(const [c1,c2] of pairs){
+    for(const a of byCat[c1]){
+      for(const b of byCat[c2]){
+        const total = a.price + b.price;
+        if(total <= budget && (!best || total > best.total)){
+          best = { items:[a,b], total };
+        }
+      }
+    }
+  }
+  return best;
+}
+
+document.getElementById('budgetBtn').addEventListener('click', () => {
+  const budget = parseFloat(document.getElementById('budgetInput').value);
+  const resultsEl = document.getElementById('budgetResults');
+  if(!budget || budget <= 0){
+    resultsEl.innerHTML = '<p class="empty-note">Ingresa un monto válido en bolivianos.</p>';
+    return;
+  }
+  const affordable = PRODUCTS.filter(p => p.price <= budget).sort((a,b)=>b.price-a.price);
+  if(affordable.length === 0){
+    resultsEl.innerHTML = `<p class="empty-note">Con ${fmt(budget)} aún no alcanza ningún producto AUREA. El más accesible es ${PRODUCTS.slice().sort((a,b)=>a.price-b.price)[0].name} por ${fmt(PRODUCTS.slice().sort((a,b)=>a.price-b.price)[0].price)}.</p>`;
+    return;
+  }
+  const combo = bestCombo(budget);
+  let html = '';
+  if(combo){
+    html += `<div class="combo-card"><h4>Combo sugerido — ${combo.items.length === 3 ? 'rutina completa' : 'dúo ideal'}</h4><div class="combo-items">`;
+    combo.items.forEach(it => {
+      html += `<div class="combo-item"><span>${it.name} <span style="color:var(--muted)">(${CAT_LABEL[it.cat]})</span></span><span>${fmt(it.price)}</span></div>`;
+    });
+    html += `</div><div class="combo-total"><span>Total</span><span>${fmt(combo.total)}</span></div>`;
+    html += `<div class="combo-total" style="border-top:none;padding-top:0;font-weight:400;color:var(--muted);font-size:0.85rem;"><span>Te sobran</span><span>${fmt(budget - combo.total)}</span></div></div>`;
+  }
+  html += `<div><h4 class="serif" style="margin-bottom:10px;">Productos que alcanzas individualmente</h4><div class="single-list">`;
+  affordable.forEach(p => { html += `<span>${p.name} · ${fmt(p.price)}</span>`; });
+  html += `</div></div>`;
+  resultsEl.innerHTML = html;
+});
+
+// ---------- SUBIDA / CÁMARA DE FOTO ----------
+let uploadedImageBase64 = null;
+let uploadedImageMediaType = null;
+
+function handleFile(file){
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    const result = reader.result;
+    uploadedImageMediaType = file.type || 'image/jpeg';
+    uploadedImageBase64 = result.split(',')[1];
+    const img = document.getElementById('previewImg');
+    img.src = result;
+    img.style.display = 'block';
+    document.getElementById('uploadHint').style.display = 'none';
+    updateLookButton();
+  };
+  reader.readAsDataURL(file);
+}
+document.getElementById('btnCamera').addEventListener('click', () => document.getElementById('fileCamera').click());
+document.getElementById('btnGallery').addEventListener('click', () => document.getElementById('fileGallery').click());
+document.getElementById('fileCamera').addEventListener('change', (e) => handleFile(e.target.files[0]));
+document.getElementById('fileGallery').addEventListener('change', (e) => handleFile(e.target.files[0]));
+
+document.getElementById('eventInput').addEventListener('input', updateLookButton);
+document.querySelectorAll('.event-chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    document.getElementById('eventInput').value = chip.dataset.event;
+    updateLookButton();
+  });
+});
+function updateLookButton(){
+  const hasImage = !!uploadedImageBase64;
+  const hasEvent = document.getElementById('eventInput').value.trim().length > 0;
+  document.getElementById('lookBtn').disabled = !(hasImage && hasEvent);
+}
+
+// ---------- IA: RECOMENDACIÓN DE LOOK ----------
+const catalogText = PRODUCTS.map(p => `- ${p.name} (${CAT_LABEL[p.cat]}): ${fmt(p.price)} — ${p.desc}`).join('\n');
+
+document.getElementById('lookBtn').addEventListener('click', async () => {
+  const event = document.getElementById('eventInput').value.trim();
+  const budget = document.getElementById('looksBudget').value;
+  const resultPanel = document.getElementById('resultPanel');
+  resultPanel.innerHTML = '<div class="spinner"></div><p class="result-placeholder">Analizando tu foto y preparando tu look para "' + event + '"...</p>';
+
+  const budgetLine = budget ? `El presupuesto disponible para este look es de Bs. ${budget}; prioriza productos que en conjunto no lo superen.` : 'No se indicó un presupuesto límite; recomienda lo más adecuado igual.';
+
+  const promptText = `Eres la asesora de estilo virtual de AUREA, una marca boliviana de belleza (cabello, piel y maquillaje) de Santa Cruz de la Sierra. Tu tono es cálido, cercano y profesional, nunca condescendiente.
+
+Analiza la foto adjunta (tono de piel, forma de rostro, cabello, estilo actual) y sugiere un look o renovación para esta ocasión: "${event}".
+
+${budgetLine}
+
+Usa EXCLUSIVAMENTE productos de este catálogo AUREA (respeta nombres y precios exactos):
+${catalogText}
+
+Responde ÚNICAMENTE con un objeto JSON válido, sin texto adicional ni markdown, con esta forma exacta:
+{
+  "diagnostico": "una frase cálida sobre lo que observas en la foto y hacia dónde vas a llevar el look",
+  "productos": [
+    { "nombre": "nombre exacto del catálogo", "precio": numero, "motivo": "por qué este producto para esta ocasión y esta persona" }
+  ],
+  "tip": "un consejo práctico de aplicación para lograr el look"
+}
+Incluye entre 2 y 4 productos del catálogo.`;
+
+  try{
+    const response = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: "claude-sonnet-4-6",
+        max_tokens: 1000,
+        messages: [{
+          role: "user",
+          content: [
+            { type: "image", source: { type: "base64", media_type: uploadedImageMediaType, data: uploadedImageBase64 } },
+            { type: "text", text: promptText }
+          ]
+        }]
+      })
+    });
+    const data = await response.json();
+    const textBlock = (data.content || []).map(c => c.text || '').join('\n');
+    const clean = textBlock.replace(/```json|```/g, '').trim();
+    const parsed = JSON.parse(clean);
+    renderResult(parsed);
+  } catch(err){
+    console.error('Error generando el look:', err);
+    resultPanel.innerHTML = '<p class="error-note">No pudimos generar tu recomendación en este momento. Intenta de nuevo en unos segundos.</p>';
+  }
+});
+
+function renderResult(r){
+  const resultPanel = document.getElementById('resultPanel');
+  const total = (r.productos || []).reduce((s,p)=>s + (Number(p.precio)||0), 0);
+  let html = `<div class="result-diag">${r.diagnostico || ''}</div><div class="result-products">`;
+  (r.productos || []).forEach(p => {
+    html += `<div class="result-product">
+      <div><div class="name">${p.nombre}</div><div class="reason">${p.motivo || ''}</div></div>
+      <div class="price">${fmt(Number(p.precio)||0)}</div>
+    </div>`;
+  });
+  html += `</div><div class="result-total"><span>Total del look</span><span>${fmt(total)}</span></div>`;
+  if(r.tip){ html += `<div class="result-tip">${r.tip}</div>`; }
+  resultPanel.innerHTML = html;
+}
+</script>
+
+</body>
+</html>
