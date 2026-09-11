@@ -500,7 +500,14 @@ document.getElementById('lookBtn').addEventListener('click', async () => {
 
   const budgetLine = budget ? `El presupuesto disponible para este look es de Bs. ${budget}; prioriza productos que en conjunto no lo superen.` : 'No se indicó un presupuesto límite; recomienda lo más adecuado igual.';
 
-  const promptText = `Eres la asesora de estilo virtual de AUREA, una marca boliviana de belleza (cabello, piel y maquillaje) de Santa Cruz de la Sierra. Tu tono es cálido, cercano y profesional, nunca condescendiente.
+  // ✅ PROMPT ESTRICTO: Prohíbe razonamiento previo y obliga a responder con JSON puro
+  const promptText = `Eres la asesora de estilo virtual de AUREA, una marca boliviana de belleza (cabello, piel y maquillaje) de Santa Cruz de la Sierra.
+
+INSTRUCCIONES ESTRICTAS:
+- NO escribas tu razonamiento ni análisis previo.
+- NO uses etiquetas <think>.
+- NO uses markdown ni bloques de código.
+- Responde DIRECTAMENTE con el objeto JSON, empezando con "{" y terminando con "}".
 
 Analiza la foto adjunta (tono de piel, forma de rostro, cabello, estilo actual) y sugiere un look o renovación para esta ocasión: "${event}".
 
@@ -509,7 +516,7 @@ ${budgetLine}
 Usa EXCLUSIVAMENTE productos de este catálogo AUREA (respeta nombres y precios exactos):
 ${catalogText}
 
-Responde ÚNICAMENTE con un objeto JSON válido, sin texto adicional ni markdown, con esta forma exacta:
+Devuelve ÚNICAMENTE este objeto JSON (sin texto antes ni después):
 {
   "diagnostico": "una frase cálida sobre lo que observas en la foto y hacia dónde vas a llevar el look",
   "productos": [
