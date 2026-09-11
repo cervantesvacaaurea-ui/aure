@@ -5,13 +5,18 @@ export default async function handler(req, res) {
 
   try {
     const { imageBase64, mediaType, promptText } = req.body;
-    const imageDataUrl = `data:${mediaType};base64,${imageBase64}`;
 
     if (!process.env.GROQ_API_KEY) {
+      console.error("FALTA GROQ_API_KEY en variables de entorno");
       return res.status(500).json({ error: "GROQ_API_KEY no configurada en Vercel" });
     }
 
-    console.log("Llamando a Groq con modelo: meta-llama/llama-4-scout-17b-16e-instruct");
+    if (!imageBase64) {
+      return res.status(400).json({ error: "No se recibió ninguna imagen" });
+    }
+
+    const imageDataUrl = `data:${mediaType};base64,${imageBase64}`;
+    console.log("Imagen recibida. Tipo:", mediaType, "Tamaño base64:", imageBase64.length);
 
     const groqResponse = await fetch("https://api.groq.com/openai/v1/chat/completions", {
       method: "POST",
@@ -20,7 +25,7 @@ export default async function handler(req, res) {
         "Authorization": `Bearer ${process.env.GROQ_API_KEY}`
       },
       body: JSON.stringify({
-        model: "meta-llama/llama-4-scout-17b-16e-instruct", // ✅ Modelo de visión correcto
+        model: "qwen/qwen3.6-27b", // ✅ El modelo exacto de tu Playground
         messages: [{
           role: "user",
           content: [
@@ -34,18 +39,26 @@ export default async function handler(req, res) {
     });
 
     const responseText = await groqResponse.text();
-    console.log("Respuesta de Groq (status " + groqResponse.status + "):", responseText);
+    console.log("Groq status:", groqResponse.status);
+    console.log("Groq response:", responseText);
 
     if (!groqResponse.ok) {
-      return res.status(500).json({ error: `Error de Groq (${groqResponse.status}): ${responseText}` });
+      return res.status(500).json({ 
+        error: `Error de Groq (${groqResponse.status}): ${responseText}` 
+      });
     }
 
     const data = JSON.parse(responseText);
     const text = data.choices?.[0]?.message?.content || '';
+    
+    if (!text) {
+      return res.status(500).json({ error: "Groq devolvió una respuesta vacía" });
+    }
+    
     return res.status(200).json({ content: [{ text: text }] });
 
   } catch (error) {
-    console.error('Error en la API:', error);
+    console.error('Error en la función:', error);
     return res.status(500).json({ error: `Error interno: ${error.message}` });
   }
 }
