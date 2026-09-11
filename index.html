@@ -166,6 +166,8 @@
   }
   @keyframes spin{ to{ transform:rotate(360deg); } }
   .result-diag{ font-family:'Fraunces', serif; font-size:1.15rem; line-height:1.4; }
+  .result-header{ display:flex; gap:16px; align-items:flex-start; }
+  .result-photo{ width:76px; height:76px; border-radius:50%; object-fit:cover; flex-shrink:0; border:2px solid var(--rose); }
   .result-products{ display:flex; flex-direction:column; gap:12px; }
   .result-product{
     display:flex; justify-content:space-between; gap:16px; border-bottom:1px solid var(--line); padding-bottom:12px;
@@ -507,6 +509,7 @@ document.getElementById('budgetBtn').addEventListener('click', () => {
 // ---------- SUBIDA / CÁMARA DE FOTO CON COMPRESIÓN ----------
 let uploadedImageBase64 = null;
 let uploadedImageMediaType = null;
+let uploadedImageDataUrl = null;
 
 function compressImage(file, maxSize = 1024, quality = 0.8){
   return new Promise((resolve, reject) => {
@@ -545,6 +548,7 @@ async function handleFile(file){
     const { base64, mediaType, dataUrl } = await compressImage(file);
     uploadedImageBase64 = base64;
     uploadedImageMediaType = mediaType;
+    uploadedImageDataUrl = dataUrl;
     const img = document.getElementById('previewImg');
     img.src = dataUrl;
     img.style.display = 'block';
@@ -657,7 +661,11 @@ Incluye entre 2 y 4 productos del catálogo.`;
 function renderResult(r){
   const resultPanel = document.getElementById('resultPanel');
   const total = (r.productos || []).reduce((s,p)=>s + (Number(p.precio)||0), 0);
-  let html = `<div class="result-diag">${r.diagnostico || ''}</div><div class="result-products">`;
+  let html = '<div class="result-header">';
+  if(uploadedImageDataUrl){
+    html += `<img class="result-photo" src="${uploadedImageDataUrl}" alt="Tu foto subida">`;
+  }
+  html += `<div class="result-diag">${r.diagnostico || ''}</div></div><div class="result-products">`;
   (r.productos || []).forEach(p => {
     html += `<div class="result-product">
       <div><div class="name">${p.nombre}</div><div class="reason">${p.motivo || ''}</div></div>
