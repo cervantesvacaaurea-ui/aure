@@ -4,6 +4,19 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>AUREA — Belleza que inspira</title>
+
+<!-- ===== ETIQUETAS PARA REDES SOCIALES (OPEN GRAPH) ===== -->
+<meta property="og:title" content="AUREA — Belleza que inspira">
+<meta property="og:description" content="Cabello, piel y maquillaje AUREA. Descubre tu look ideal.">
+<meta property="og:image" content="https://aure-plum.vercel.app/banner.jpeg">
+<meta property="og:url" content="https://aure-plum.vercel.app/">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AUREA — Belleza que inspira">
+<meta name="twitter:description" content="Cabello, piel y maquillaje AUREA. Descubre tu look ideal.">
+<meta name="twitter:image" content="https://aure-plum.vercel.app/banner.jpeg">
+<!-- ===== FIN ETIQUETAS REDES SOCIALES ===== -->
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,450;0,9..144,600;1,9..144,450&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
@@ -59,25 +72,9 @@
   }
   .navlinks a:hover{ border-bottom-color:var(--wine); }
 
-  /* HERO */
-  .hero{ padding:64px 0 40px; }
-  .hero-grid{
-    display:grid; grid-template-columns: 1.1fr 0.9fr; gap:56px; align-items:center;
-  }
-  .eyebrow{ color:var(--wine); font-size:0.85rem; margin-bottom:14px; }
-  .hero h1{ font-size:clamp(2.6rem, 5vw, 4.2rem); line-height:1.02; }
-  .hero p.lead{ margin-top:20px; max-width:46ch; color:#4d3a3e; font-size:1.05rem; }
-  .cta-row{ display:flex; gap:16px; margin-top:32px; flex-wrap:wrap; }
-  .btn{
-    display:inline-block; padding:13px 26px; border-radius:var(--radius);
-    text-decoration:none; font-size:0.92rem; cursor:pointer; border:1px solid var(--ink);
-    background:var(--ink); color:var(--paper); transition: background 0.15s, color 0.15s, border-color .15s;
-  }
-  .btn:hover{ background:var(--wine-deep); border-color:var(--wine-deep); }
-  .btn.ghost{ background:transparent; color:var(--ink); border-color:var(--ink); }
-  .btn.ghost:hover{ background:var(--ink); color:var(--paper); }
-  .btn:disabled{ opacity:0.5; cursor:not-allowed; background:var(--muted); border-color:var(--muted); }
-  .hero-img{ width:100%; aspect-ratio: 4/5; object-fit:cover; border-radius:2px; }
+  /* HERO (BANNER) */
+  .hero{ padding:0; }
+  .hero img{ width:100%; height:auto; display:block; }
 
   section{ padding:72px 0; border-top:1px solid var(--line); }
   .section-head{ max-width:60ch; margin-bottom:40px; }
@@ -183,8 +180,6 @@
   .foot-grid p{ color:var(--muted); font-size:0.85rem; }
 
   @media (max-width: 860px){
-    .hero-grid{ grid-template-columns:1fr; }
-    .hero-img{ order:-1; aspect-ratio:16/10; }
     .product-grid{ grid-template-columns:1fr 1fr; }
     .budget-panel{ grid-template-columns:1fr; }
     .look-panel{ grid-template-columns:1fr; }
@@ -207,19 +202,9 @@
   </nav>
 </header>
 
-<section class="hero" style="border-top:none;">
-  <div class="wrap hero-grid">
-    <div>
-      <div class="eyebrow">Santa Cruz de la Sierra · Nueva colección 2026</div>
-      <h1>Belleza que<br>inspira.</h1>
-      <p class="lead">Cabello, piel y maquillaje AUREA. Elige lo que se ajusta a tu presupuesto y descubre, con ayuda de una asesora virtual, el look ideal para cada ocasión.</p>
-      <div class="cta-row">
-        <a class="btn" href="#presupuesto">Calcular mi presupuesto</a>
-        <a class="btn ghost" href="#look">Probar mi look con IA</a>
-      </div>
-    </div>
-    <img class="hero-img" src="https://aurea-scz.lovable.app/assets/hero-ygjP9cXo.jpg" alt="Modelo AUREA con piel luminosa y labios en tono vino">
-  </div>
+<!-- SECCIÓN HERO: SOLO EL BANNER -->
+<section class="hero">
+  <img src="https://github.com/cervantesvacaaurea-ui/aure/raw/main/banner.jpeg" alt="Banner AUREA">
 </section>
 
 <!-- CATALOGO -->
@@ -394,7 +379,6 @@ function bestCombo(budget){
     }
   }
   if(best) return best;
-  // fallback: 2 categorías
   const pairs = [['cabello','piel'],['cabello','maquillaje'],['piel','maquillaje']];
   for(const [c1,c2] of pairs){
     for(const a of byCat[c1]){
