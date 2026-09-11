@@ -421,24 +421,55 @@ document.getElementById('budgetBtn').addEventListener('click', () => {
   resultsEl.innerHTML = html;
 });
 
-// ---------- SUBIDA / CÁMARA DE FOTO ----------
+// ---------- SUBIDA / CÁMARA DE FOTO CON COMPRESIÓN ----------
 let uploadedImageBase64 = null;
 let uploadedImageMediaType = null;
 
-function handleFile(file){
+function compressImage(file, maxSize = 1024, quality = 0.8){
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        let { width, height } = img;
+        if(width > height && width > maxSize){ height *= maxSize / width; width = maxSize; }
+        else if(height > width && height > maxSize){ width *= maxSize / height; height = maxSize; }
+
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+
+        const dataUrl = canvas.toDataURL('image/jpeg', quality);
+        resolve({
+          base64: dataUrl.split(',')[1],
+          mediaType: 'image/jpeg',
+          dataUrl: dataUrl
+        });
+      };
+      img.onerror = reject;
+      img.src = e.target.result;
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+async function handleFile(file){
   if(!file) return;
-  const reader = new FileReader();
-  reader.onload = () => {
-    const result = reader.result;
-    uploadedImageMediaType = file.type || 'image/jpeg';
-    uploadedImageBase64 = result.split(',')[1];
+  try {
+    const { base64, mediaType, dataUrl } = await compressImage(file);
+    uploadedImageBase64 = base64;
+    uploadedImageMediaType = mediaType;
     const img = document.getElementById('previewImg');
-    img.src = result;
+    img.src = dataUrl;
     img.style.display = 'block';
     document.getElementById('uploadHint').style.display = 'none';
     updateLookButton();
-  };
-  reader.readAsDataURL(file);
+  } catch(err){
+    console.error('Error al procesar la imagen:', err);
+  }
 }
 document.getElementById('btnCamera').addEventListener('click', () => document.getElementById('fileCamera').click());
 document.getElementById('btnGallery').addEventListener('click', () => document.getElementById('fileGallery').click());
@@ -489,7 +520,6 @@ Responde ÚNICAMENTE con un objeto JSON válido, sin texto adicional ni markdown
 Incluye entre 2 y 4 productos del catálogo.`;
 
   try{
-    // ✅ CORREGIDO: Ahora llama a tu propia función en Vercel
     const response = await fetch("/api/look", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
