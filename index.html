@@ -539,15 +539,18 @@ Incluye entre 2 y 4 productos del catálogo.`;
     const data = await response.json();
     const textBlock = (data.content || []).map(c => c.text || '').join('\n');
 
-    // ✅ LIMPIEZA CRÍTICA: Quitamos la etiqueta <think>...</think> que añade Qwen
-    const clean = textBlock
-      .replace(/<think[\s\S]*?<\/think>/gi, '')   // Elimina bloque de pensamiento
-      .replace(/```json|```/g, '')                // Elimina bloques de código markdown
-      .trim();
+    // ✅ EXTRACCIÓN ROBUSTA: Buscamos el primer '{' y el último '}' para extraer SOLO el JSON
+    const firstBrace = textBlock.indexOf('{');
+    const lastBrace = textBlock.lastIndexOf('}');
 
-    console.log("Texto limpio a parsear:", clean); // Para depurar en consola
+    if (firstBrace === -1 || lastBrace === -1) {
+      throw new Error("La IA no devolvió un JSON válido. Texto recibido: " + textBlock.substring(0, 300));
+    }
 
-    const parsed = JSON.parse(clean);
+    const jsonText = textBlock.substring(firstBrace, lastBrace + 1);
+    console.log("JSON extraído a parsear:", jsonText);
+
+    const parsed = JSON.parse(jsonText);
     renderResult(parsed);
   } catch(err){
     console.error('Error generando el look:', err);
