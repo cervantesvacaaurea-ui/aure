@@ -7,7 +7,6 @@ export default async function handler(req, res) {
     const { imageBase64, mediaType, promptText } = req.body;
 
     if (!process.env.GROQ_API_KEY) {
-      console.error("FALTA GROQ_API_KEY en variables de entorno");
       return res.status(500).json({ error: "GROQ_API_KEY no configurada en Vercel" });
     }
 
@@ -16,7 +15,7 @@ export default async function handler(req, res) {
     }
 
     const imageDataUrl = `data:${mediaType};base64,${imageBase64}`;
-    console.log("Imagen recibida. Tipo:", mediaType, "Tamaño base64:", imageBase64.length);
+    console.log("Llamando a Groq con modelo qwen/qwen3.6-27b");
 
     const groqResponse = await fetch("https://api.groq.com/openai/v1/chat/completions", {
       method: "POST",
@@ -25,7 +24,7 @@ export default async function handler(req, res) {
         "Authorization": `Bearer ${process.env.GROQ_API_KEY}`
       },
       body: JSON.stringify({
-        model: "qwen/qwen3.6-27b", // ✅ El modelo exacto de tu Playground
+        model: "qwen/qwen3.6-27b",
         messages: [{
           role: "user",
           content: [
@@ -34,27 +33,20 @@ export default async function handler(req, res) {
           ]
         }],
         temperature: 0.7,
-        max_tokens: 1000
+        max_tokens: 4000  // ✅ AUMENTADO: Suficiente espacio para pensar y responder
       })
     });
 
     const responseText = await groqResponse.text();
     console.log("Groq status:", groqResponse.status);
-    console.log("Groq response:", responseText);
 
     if (!groqResponse.ok) {
-      return res.status(500).json({ 
-        error: `Error de Groq (${groqResponse.status}): ${responseText}` 
-      });
+      return res.status(500).json({ error: `Error de Groq (${groqResponse.status}): ${responseText}` });
     }
 
     const data = JSON.parse(responseText);
     const text = data.choices?.[0]?.message?.content || '';
-    
-    if (!text) {
-      return res.status(500).json({ error: "Groq devolvió una respuesta vacía" });
-    }
-    
+
     return res.status(200).json({ content: [{ text: text }] });
 
   } catch (error) {
