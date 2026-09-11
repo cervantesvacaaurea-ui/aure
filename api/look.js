@@ -1,10 +1,13 @@
 export default async function handler(req, res) {
+  // Solo permitir peticiones POST
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Método no permitido' });
   }
 
   try {
     const { imageBase64, mediaType, promptText } = req.body;
+    
+    // Convertimos la imagen a Data URL para Groq
     const imageDataUrl = `data:${mediaType};base64,${imageBase64}`;
 
     // Verificamos que la clave existe
@@ -13,8 +16,9 @@ export default async function handler(req, res) {
       return res.status(500).json({ error: "GROQ_API_KEY no configurada en Vercel" });
     }
 
-    console.log("Llamando a Groq con modelo: llama-3.2-11b-vision-preview");
+    console.log("Llamando a Groq con modelo: meta-llama/llama-4-scout-17b-16e-instruct");
 
+    // Llamada a Groq con el modelo de visión actualizado
     const groqResponse = await fetch("https://api.groq.com/openai/v1/chat/completions", {
       method: "POST",
       headers: {
@@ -22,7 +26,7 @@ export default async function handler(req, res) {
         "Authorization": `Bearer ${process.env.GROQ_API_KEY}`
       },
       body: JSON.stringify({
-        model: "llama-3.2-11b-vision-preview",
+        model: "meta-llama/llama-4-scout-17b-16e-instruct", // Modelo actualizado con visión
         messages: [{
           role: "user",
           content: [
@@ -44,6 +48,8 @@ export default async function handler(req, res) {
 
     const data = JSON.parse(responseText);
     const text = data.choices?.[0]?.message?.content || '';
+    
+    // Devolvemos el formato que espera tu index.html
     return res.status(200).json({ content: [{ text: text }] });
 
   } catch (error) {
