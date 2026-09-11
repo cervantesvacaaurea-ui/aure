@@ -29,6 +29,7 @@
     --wine-deep:#4A121F;
     --gold:#A6813C;
     --rose:#EFDDD6;
+    --corporal:#C98A5E;
     --muted:#8B7A76;
     --line: rgba(42,27,31,0.12);
     --radius: 3px;
@@ -96,6 +97,7 @@
   .swatch.cabello{ background:var(--gold); }
   .swatch.piel{ background:#C9A9AE; }
   .swatch.maquillaje{ background:var(--wine); }
+  .swatch.corporal{ background:var(--corporal); }
   .product-card h3{ font-size:1.08rem; font-weight:500; }
   .product-card .desc{ color:var(--muted); font-size:0.88rem; flex-grow:1; }
   .product-row{ display:flex; align-items:baseline; justify-content:space-between; margin-top:6px; }
@@ -220,6 +222,7 @@
       <button class="cat-tab" data-cat="cabello" aria-pressed="false">Cabello</button>
       <button class="cat-tab" data-cat="piel" aria-pressed="false">Piel</button>
       <button class="cat-tab" data-cat="maquillaje" aria-pressed="false">Maquillaje</button>
+      <button class="cat-tab" data-cat="corporal" aria-pressed="false">Corporal</button>
     </div>
     <div class="product-grid" id="productGrid"></div>
   </div>
@@ -311,28 +314,108 @@
 </footer>
 
 <script>
-// ---------- CATÁLOGO ----------
+// ---------- CATÁLOGO (datos reales: hoja "aurea" — Farmacorp / Piel Boliviana) ----------
 const PRODUCTS = [
-  { id:'h1', cat:'cabello', name:'Sérum Reparador AUREA Hair', desc:'Repara puntas abiertas y sella la fibra capilar.', price:165 },
-  { id:'h2', cat:'cabello', name:'Shampoo Nutritivo AUREA Hair', desc:'Limpieza suave para cabello reseco o tratado.', price:89 },
-  { id:'h3', cat:'cabello', name:'Acondicionador Sellador', desc:'Desenreda y aporta brillo espejo.', price:92 },
-  { id:'h4', cat:'cabello', name:'Mascarilla Brillo Espejo', desc:'Tratamiento semanal intensivo de nutrición.', price:145 },
-  { id:'h5', cat:'cabello', name:'Aceite de Argán AUREA', desc:'Finalizador ligero, controla el frizz.', price:110 },
-  { id:'h6', cat:'cabello', name:'Spray Protector de Calor', desc:'Protege antes de planchas y secadoras.', price:78 },
-  { id:'p1', cat:'piel', name:'Crema Hidratante Luminosa', desc:'Hidratación diaria con efecto luminoso.', price:135 },
-  { id:'p2', cat:'piel', name:'Sérum Vitamina C', desc:'Ilumina el tono y unifica la piel.', price:175 },
-  { id:'p3', cat:'piel', name:'Limpiador Facial Suave', desc:'Limpieza diaria sin resecar.', price:68 },
-  { id:'p4', cat:'piel', name:'Contorno de Ojos Antiedad', desc:'Reduce líneas finas y ojeras.', price:158 },
-  { id:'p5', cat:'piel', name:'Protector Solar FPS50', desc:'Protección diaria, acabado natural.', price:98 },
-  { id:'p6', cat:'piel', name:'Mascarilla de Arcilla Rosa', desc:'Purifica y minimiza poros.', price:72 },
-  { id:'m1', cat:'maquillaje', name:'Labial Vino Satinado', desc:'El tono icónico AUREA, acabado satinado.', price:85 },
-  { id:'m2', cat:'maquillaje', name:'Base Luminosa Cobertura Media', desc:'Piel pareja con acabado natural.', price:148 },
-  { id:'m3', cat:'maquillaje', name:'Rubor en Crema', desc:'Efecto sonrojo natural, fácil de difuminar.', price:79 },
-  { id:'m4', cat:'maquillaje', name:'Paleta de Sombras Esenciales', desc:'Tonos neutros para día y noche.', price:165 },
-  { id:'m5', cat:'maquillaje', name:'Máscara de Pestañas Volumen', desc:'Volumen sin grumos, larga duración.', price:69 },
-  { id:'m6', cat:'maquillaje', name:'Iluminador Líquido', desc:'Efecto piel de cristal en pómulos.', price:95 },
+  {id:'AUREA-0001',name:'Primer Facial Astra Zen Routine Face Primer Nro. 01 Veil X 30Ml',brand:'Astra',cat:'piel',sub:'Primer',price:75,tier:'Económico'},
+  {id:'AUREA-0002',name:'Polvo Mineral Astra Pure Beauty Banana X 10G',brand:'Astra',cat:'maquillaje',sub:'Polvo',price:122.8,tier:'Medio'},
+  {id:'AUREA-0003',name:'Base Astra Soft Mat Foundation Nro. 03 Sand X 30Ml',brand:'Astra',cat:'maquillaje',sub:'Base',price:116.62,tier:'Medio'},
+  {id:'AUREA-0004',name:'Primer Facial Astra Pure Beauty X 30Ml',brand:'Astra',cat:'maquillaje',sub:'Primer',price:97.1,tier:'Medio'},
+  {id:'AUREA-0005',name:'Base y Corrector Astra Transformist Nro. 03N Beige',brand:'Astra',cat:'maquillaje',sub:'Base/Corrector',price:159.7,tier:'Medio'},
+  {id:'AUREA-0006',name:'Asepxia BB Maquillaje Polvo Beige Claro Mate X 10G',brand:'Asepxia',cat:'maquillaje',sub:'BB/Polvo',price:84.8,tier:'Medio'},
+  {id:'AUREA-0007',name:'Asepxia BB Maquillaje Polvo Tono Canela X 10G',brand:'Asepxia',cat:'maquillaje',sub:'BB/Polvo',price:84.8,tier:'Medio'},
+  {id:'AUREA-0008',name:'Asepxia Maquillaje Polvo Compacto Beige X 10G',brand:'Asepxia',cat:'maquillaje',sub:'Polvo',price:85.6,tier:'Medio'},
+  {id:'AUREA-0009',name:'Crema Facial Astra Skin Viso X 30Ml',brand:'Astra',cat:'piel',sub:'Crema facial',price:171.3,tier:'Medio'},
+  {id:'AUREA-0010',name:'Loción Facial Astra Skin Idratante X 50Ml',brand:'Astra',cat:'piel',sub:'Loción facial',price:171.3,tier:'Medio'},
+  {id:'AUREA-0011',name:"Loréal Revitalift Ácido Hialurónico Gel Crema X 50Ml",brand:"L'Oréal",cat:'piel',sub:'Hidratante',price:255.8,tier:'Premium'},
+  {id:'AUREA-0012',name:'Crema Facial Veganis Nocturna Nutritiva X 30Ml',brand:'Veganis',cat:'piel',sub:'Crema facial',price:175,tier:'Medio'},
+  {id:'AUREA-0013',name:'Protector Solar Facial Sunpro Crema Con Color SPF50 X 50Ml',brand:'Sunpro',cat:'piel',sub:'Protector solar',price:160,tier:'Medio'},
+  {id:'AUREA-0014',name:'Protector Solar Facial Sunpro Q10 SPF90 X 50Ml',brand:'Sunpro',cat:'piel',sub:'Protector solar',price:150,tier:'Medio'},
+  {id:'AUREA-0015',name:'Protector Solar Neutrogena Sun Fresh FPS50 Con Color',brand:'Neutrogena',cat:'piel',sub:'Protector solar',price:134.4,tier:'Medio'},
+  {id:'AUREA-0016',name:'Protector Solar Neutrogena Sun Fresh FPS50 Sin Color',brand:'Neutrogena',cat:'piel',sub:'Protector solar',price:134.4,tier:'Medio'},
+  {id:'AUREA-0017',name:'Isdin Fotoprotector Fusion SPF50 Water Color X 50Ml',brand:'ISDIN',cat:'piel',sub:'Protector solar',price:364.1,tier:'Premium'},
+  {id:'AUREA-0018',name:'Asepxia Jabón Carbón Efecto Purificante X 100G',brand:'Asepxia',cat:'piel',sub:'Limpiador',price:51.44,tier:'Económico'},
+  {id:'AUREA-0019',name:'Nivea Crema Facial X 30Ml',brand:'Nivea',cat:'piel',sub:'Crema facial',price:21.2,tier:'Económico'},
+  {id:'AUREA-0020',name:'Nivea Antiarrugas Q10 Noche X 50Ml',brand:'Nivea',cat:'piel',sub:'Crema facial',price:354,tier:'Premium'},
+  {id:'AUREA-0021',name:'Cicatricure Beauty Care Crema X 50G',brand:'Cicatricure',cat:'piel',sub:'Crema facial',price:261,tier:'Premium'},
+  {id:'AUREA-0022',name:'Cicatricure Crema Corporal Reparación Intensa 10% Urea X 250G',brand:'Cicatricure',cat:'piel',sub:'Crema corporal',price:107,tier:'Medio'},
+  {id:'AUREA-0023',name:'Cicatricure Contorno Ojos Crema Gel X 15G',brand:'Cicatricure',cat:'piel',sub:'Contorno de ojos',price:272,tier:'Premium'},
+  {id:'AUREA-0024',name:'Eucerin pH5 Crema Intensiva X 450Ml',brand:'Eucerin',cat:'piel',sub:'Crema corporal',price:407.9,tier:'Premium'},
+  {id:'AUREA-0025',name:'Neutrogena Hydro Boost Crema Corporal X 200Ml',brand:'Neutrogena',cat:'piel',sub:'Crema corporal',price:77,tier:'Económico'},
+  {id:'AUREA-0026',name:'Nivea Body Soft Milk X 400Ml',brand:'Nivea',cat:'piel',sub:'Crema corporal',price:86.5,tier:'Medio'},
+  {id:'AUREA-0027',name:'Nivea Agua Micelar Rose Care X 400Ml',brand:'Nivea',cat:'piel',sub:'Agua micelar',price:208,tier:'Premium'},
+  {id:'AUREA-0028',name:'Sesderma Azelac RU Serum Despigmentante X 30Ml',brand:'Sesderma',cat:'piel',sub:'Serum',price:403,tier:'Premium'},
+  {id:'AUREA-0029',name:'Sunpro Bronceador Protector Aceite SPF30 X 220Ml',brand:'Sunpro',cat:'piel',sub:'Protector solar',price:49.38,tier:'Económico'},
+  {id:'AUREA-0030',name:'Máscara de Pestañas Astra Subliminal Atomic Volume X 11Ml',brand:'Astra',cat:'maquillaje',sub:'Máscara de pestañas',price:73.15,tier:'Económico'},
+  {id:'AUREA-0031',name:'Máscara de Pestañas Astra Subliminal Waterproof Black X 11Ml',brand:'Astra',cat:'maquillaje',sub:'Máscara de pestañas',price:77.21,tier:'Económico'},
+  {id:'AUREA-0032',name:'Máscara de Pestañas Astra Volume Waterproof Nro. 01',brand:'Astra',cat:'maquillaje',sub:'Máscara de pestañas',price:71.7,tier:'Económico'},
+  {id:'AUREA-0033',name:'Máscara de Pestañas Maybelline The Sky High 802 Very Black X 6Ml',brand:'Maybelline',cat:'maquillaje',sub:'Máscara de pestañas',price:165,tier:'Medio'},
+  {id:'AUREA-0034',name:'Máscara de Pestañas Maybelline The Sky High 801 Very Black',brand:'Maybelline',cat:'maquillaje',sub:'Máscara de pestañas',price:132,tier:'Medio'},
+  {id:'AUREA-0035',name:'Gel para Cejas y Pestañas Essence Gel',brand:'Essence',cat:'maquillaje',sub:'Cejas/Pestañas',price:35,tier:'Económico'},
+  {id:'AUREA-0036',name:'Delineador de Ojos Essence Kajal 01',brand:'Essence',cat:'maquillaje',sub:'Delineador',price:18,tier:'Económico'},
+  {id:'AUREA-0037',name:'Polvo Compacto Essence About Matt',brand:'Essence',cat:'maquillaje',sub:'Polvo',price:54.5,tier:'Económico'},
+  {id:'AUREA-0038',name:'Sombra Essence The Brown Edit Eyeshadow Palette 30',brand:'Essence',cat:'maquillaje',sub:'Sombras',price:72,tier:'Económico'},
+  {id:'AUREA-0039',name:'Brillo Labial Essence Juicy Bomb Shiny Lipgloss 103',brand:'Essence',cat:'maquillaje',sub:'Gloss',price:23,tier:'Económico'},
+  {id:'AUREA-0040',name:'Labial Líquido Astra Hypnotize Nro. 05 Influencer',brand:'Astra',cat:'maquillaje',sub:'Labial',price:72.41,tier:'Económico'},
+  {id:'AUREA-0041',name:'Esponja de Maquillaje QVS Truyu Deluxe',brand:'QVS/Truyu',cat:'maquillaje',sub:'Accesorio',price:49.5,tier:'Económico'},
+  {id:'AUREA-0042',name:'Brocha para Rostro QVS Truyu Perfection Brush',brand:'QVS/Truyu',cat:'maquillaje',sub:'Brocha',price:66.1,tier:'Económico'},
+  {id:'AUREA-0043',name:'Acondicionador Sedal Liso Perfecto X 340Ml',brand:'Sedal',cat:'cabello',sub:'Acondicionador',price:29.2,tier:'Económico'},
+  {id:'AUREA-0044',name:'Acondicionador Sedal Luminous UV Glycol + Vita C X 340Ml',brand:'Sedal',cat:'cabello',sub:'Acondicionador',price:29.2,tier:'Económico'},
+  {id:'AUREA-0045',name:'Acondicionador Dove UV Repair & Glow + Ferúlico X 250Ml',brand:'Dove',cat:'cabello',sub:'Acondicionador',price:35.9,tier:'Económico'},
+  {id:'AUREA-0046',name:'Shampoo Dove UV Repair & Glow + Ferúlico X 650Ml',brand:'Dove',cat:'cabello',sub:'Shampoo',price:80.7,tier:'Medio'},
+  {id:'AUREA-0047',name:'Crema para Peinar Revive Reparación Intensa X 250Ml',brand:'Revive',cat:'cabello',sub:'Crema para peinar',price:19.3,tier:'Económico'},
+  {id:'AUREA-0048',name:'Shampoo Revive Liso y Sedoso Sin Sal X 340Ml',brand:'Revive',cat:'cabello',sub:'Shampoo',price:22.5,tier:'Económico'},
+  {id:'AUREA-0049',name:'Shampoo Tío Nacho Engrosador Anticaída X 415Ml',brand:'Tío Nacho',cat:'cabello',sub:'Shampoo',price:81.6,tier:'Medio'},
+  {id:'AUREA-0050',name:'Shampoo Tío Nacho Control Caspa X 415Ml',brand:'Tío Nacho',cat:'cabello',sub:'Shampoo',price:81.6,tier:'Medio'},
+  {id:'AUREA-0051',name:'Shampoo Pantene Restauración X 400Ml',brand:'Pantene',cat:'cabello',sub:'Shampoo',price:74.9,tier:'Económico'},
+  {id:'AUREA-0052',name:'Acondicionador Pantene Pro-V Miracles Colágeno X 510Ml',brand:'Pantene',cat:'cabello',sub:'Acondicionador',price:83.9,tier:'Medio'},
+  {id:'AUREA-0053',name:'Tresemmé Acondicionador Liso Efecto Botox X 880Ml',brand:'Tresemmé',cat:'cabello',sub:'Acondicionador',price:85.3,tier:'Medio'},
+  {id:'AUREA-0054',name:'Shampoo Babaria Coco y Biotina Hidratante X 700Ml',brand:'Babaria',cat:'cabello',sub:'Shampoo',price:72.6,tier:'Económico'},
+  {id:'AUREA-0055',name:'Shampoo Babaria Energizante SOS Caída X 500Ml',brand:'Babaria',cat:'cabello',sub:'Shampoo',price:77.9,tier:'Económico'},
+  {id:'AUREA-0056',name:'Shampoo Ballerina Brillo Luminoso Manzanilla X 410Ml',brand:'Ballerina',cat:'cabello',sub:'Shampoo',price:24.3,tier:'Económico'},
+  {id:'AUREA-0057',name:'Shampoo Ballerina Color Ideal Sin Sal X 750Ml',brand:'Ballerina',cat:'cabello',sub:'Shampoo',price:38.2,tier:'Económico'},
+  {id:'AUREA-0058',name:'Shampoo Carissa Trigo y Miel Doypack X 800Ml',brand:'Carissa',cat:'cabello',sub:'Shampoo',price:23.1,tier:'Económico'},
+  {id:'AUREA-0059',name:'Gel para Cabello Fixer Super Extra Fuerte X 250G',brand:'Fixer',cat:'cabello',sub:'Styling',price:16.4,tier:'Económico'},
+  {id:'AUREA-0060',name:'Gel Herbal Essence Espuma Modeladora Rizos X 210Ml',brand:'Herbal Essences',cat:'cabello',sub:'Styling',price:65.8,tier:'Económico'},
+  {id:'AUREA-0061',name:'SKIN1004 Centella clasic Air-fit FPS30',brand:'SKIN1004',cat:'piel',sub:'Protector solar',price:248,tier:'Premium'},
+  {id:'AUREA-0062',name:'SKIN1004 Hyalu-CicaWater Fit SPF50+ Twin Pack',brand:'SKIN1004',cat:'piel',sub:'Protector solar',price:445,tier:'Premium'},
+  {id:'AUREA-0063',name:'Garnier Gel Hidratante Colágeno 85 gr',brand:'Garnier',cat:'piel',sub:'Hidratante',price:81,tier:'Medio'},
+  {id:'AUREA-0064',name:'Garnier Gel Hidratante Vitamina C 85 gr',brand:'Garnier',cat:'piel',sub:'Hidratante',price:81,tier:'Medio'},
+  {id:'AUREA-0065',name:'Garnier Gel Hidratante Salicílico 85 gr',brand:'Garnier',cat:'piel',sub:'Hidratante',price:81,tier:'Medio'},
+  {id:'AUREA-0066',name:'Beauty of Joseon Limpiador Refrescante Green Plum',brand:'Beauty of Joseon',cat:'piel',sub:'Limpiador',price:224,tier:'Premium'},
+  {id:'AUREA-0067',name:'Beauty of Joseon Serum Calmante Té Verde y Panthenol',brand:'Beauty of Joseon',cat:'piel',sub:'Serum',price:251,tier:'Premium'},
+  {id:'AUREA-0068',name:'Beauty of Joseon Serum Iluminador Propóleo y Niacinamida',brand:'Beauty of Joseon',cat:'piel',sub:'Serum',price:251,tier:'Premium'},
+  {id:'AUREA-0069',name:'Beauty of Joseon Serum Reparador Ginseng y Baba de Caracol',brand:'Beauty of Joseon',cat:'piel',sub:'Serum',price:251,tier:'Premium'},
+  {id:'AUREA-0070',name:'Beauty of Joseon Serum Revitalizante Arroz y Alpha Arbutin',brand:'Beauty of Joseon',cat:'piel',sub:'Serum',price:251,tier:'Premium'},
+  {id:'AUREA-0071',name:'Beauty of Joseon Exfoliante en Gel',brand:'Beauty of Joseon',cat:'piel',sub:'Exfoliante',price:224,tier:'Premium'},
+  {id:'AUREA-0072',name:'Beauty of Joseon Crema Dynasty',brand:'Beauty of Joseon',cat:'piel',sub:'Crema hidratante',price:314,tier:'Premium'},
+  {id:'AUREA-0073',name:'Beauty of Joseon Crema en Gel Red Bean',brand:'Beauty of Joseon',cat:'piel',sub:'Crema hidratante',price:259,tier:'Premium'},
+  {id:'AUREA-0074',name:'Celimax Protector Solar Oil Control Sun Stick',brand:'Celimax',cat:'piel',sub:'Protector solar',price:286,tier:'Premium'},
+  {id:'AUREA-0075',name:'SKIN1004 Kit Travel Pouch Set',brand:'SKIN1004',cat:'piel',sub:'Kit',price:464,tier:'Premium'},
+  {id:'AUREA-0077',name:'Dr. Althea Serum Retinol 0,1%',brand:'Dr. Althea',cat:'piel',sub:'Serum',price:285,tier:'Premium'},
+  {id:'AUREA-0078',name:'Isdin Fotoprotector Pediatrics Stick SPF 50',brand:'ISDIN',cat:'piel',sub:'Protector solar',price:283,tier:'Premium'},
+  {id:'AUREA-0079',name:'Sesderma Sensyses Cleanser Hyaluronic',brand:'Sesderma',cat:'piel',sub:'Limpiador',price:164,tier:'Medio'},
+  {id:'AUREA-0080',name:'Sesderma Seskavel Anticaída Shampoo',brand:'Sesderma',cat:'cabello',sub:'Shampoo',price:239,tier:'Premium'},
+  {id:'AUREA-0081',name:'Neutrogena Hydro Boost Crema Corporal 200Ml',brand:'Neutrogena',cat:'corporal',sub:'Crema corporal',price:77,tier:'Económico'},
+  {id:'AUREA-0082',name:'Sesderma Retiage 5 Serum',brand:'Sesderma',cat:'piel',sub:'Serum',price:516,tier:'Premium'},
+  {id:'AUREA-0083',name:'Sesderma Hidraderm Hyal 5 Serum',brand:'Sesderma',cat:'piel',sub:'Serum',price:432,tier:'Premium'},
+  {id:'AUREA-0084',name:'Dermaglós Serum Ácido Hialurónico',brand:'Dermaglós',cat:'piel',sub:'Serum',price:245,tier:'Premium'},
+  {id:'AUREA-0085',name:'Dermaglós Protector Solar FPS 50',brand:'Dermaglós',cat:'piel',sub:'Protector solar',price:220,tier:'Premium'},
+  {id:'AUREA-0086',name:'Dermaglós Crema Gel Ultra Hidratación',brand:'Dermaglós',cat:'piel',sub:'Crema hidratante',price:245,tier:'Premium'},
+  {id:'AUREA-0087',name:'Isdin Protector Solar Fusion Water Alcaraz',brand:'ISDIN',cat:'piel',sub:'Protector solar',price:283,tier:'Premium'},
+  {id:'AUREA-0088',name:'Bella Aurora Pack Bio10 Forte Dropper + Contorno de Ojos',brand:'Bella Aurora',cat:'piel',sub:'Pack',price:469,tier:'Premium'},
+  {id:'AUREA-0089',name:'Aceite Capilar Farmax de Uva X 100Ml',brand:'Farmax',cat:'cabello',sub:'Aceite',price:25.6,tier:'Económico'},
+  {id:'AUREA-0090',name:'Aceite Capilar Farmax de Aloe Vera X 100Ml',brand:'Farmax',cat:'cabello',sub:'Aceite',price:23.46,tier:'Económico'},
+  {id:'AUREA-0091',name:'Aceite Capilar Farmax de Coco X 100Ml',brand:'Farmax',cat:'cabello',sub:'Aceite',price:25.6,tier:'Económico'},
+  {id:'AUREA-0092',name:'Aceite Elvive Tratamiento Capilar Extraordinario X 100Ml',brand:'Elvive',cat:'cabello',sub:'Aceite',price:149.7,tier:'Medio'},
+  {id:'AUREA-0093',name:'Acondicionador Algabo Açaí y Romero Sin Sal X 750Ml',brand:'Algabo',cat:'cabello',sub:'Acondicionador',price:27.63,tier:'Económico'},
+  {id:'AUREA-0094',name:'Acondicionador Algabo Aceite de Oliva y Argán Sin Sal X 750Ml',brand:'Algabo',cat:'cabello',sub:'Acondicionador',price:27.63,tier:'Económico'},
+  {id:'AUREA-0095',name:'Acondicionador Ballerina Brillo Luminoso Manzanilla X 410Ml',brand:'Ballerina',cat:'cabello',sub:'Acondicionador',price:24.3,tier:'Económico'},
+  {id:'AUREA-0096',name:'Acondicionador Ballerina Color Ideal Sin Sal X 750Ml',brand:'Ballerina',cat:'cabello',sub:'Acondicionador',price:45,tier:'Económico'},
+  {id:'AUREA-0097',name:'Acondicionador Ballerina Hidratación Intensa Granada X 410Ml',brand:'Ballerina',cat:'cabello',sub:'Acondicionador',price:24.5,tier:'Económico'},
+  {id:'AUREA-0098',name:'Acondicionador Dove Bond Intense Repair X 250Ml',brand:'Dove',cat:'cabello',sub:'Acondicionador',price:35.5,tier:'Económico'},
+  {id:'AUREA-0099',name:'Óleo Capilar Dove UV Repair & Glow + Ferúlico X 110Ml',brand:'Dove',cat:'cabello',sub:'Aceite/Serum',price:78.5,tier:'Económico'},
 ];
-const CAT_LABEL = { cabello:'Cabello', piel:'Piel', maquillaje:'Maquillaje' };
+const CAT_LABEL = { cabello:'Cabello', piel:'Piel & Facial', maquillaje:'Maquillaje', corporal:'Corporal' };
 const fmt = (n) => 'Bs. ' + n.toFixed(0);
 
 function renderGrid(filter){
@@ -343,9 +426,9 @@ function renderGrid(filter){
     card.className = 'product-card';
     card.innerHTML = `
       <div class="swatch ${p.cat}"></div>
-      <div class="cat-label">${CAT_LABEL[p.cat]}</div>
+      <div class="cat-label">${CAT_LABEL[p.cat]} · ${p.sub} · ${p.tier}</div>
       <h3>${p.name}</h3>
-      <div class="desc">${p.desc}</div>
+      <div class="desc">${p.brand}</div>
       <div class="product-row"><span class="price">${fmt(p.price)}</span></div>
     `;
     grid.appendChild(card);
@@ -490,7 +573,8 @@ function updateLookButton(){
 }
 
 // ---------- IA: RECOMENDACIÓN DE LOOK ----------
-const catalogText = PRODUCTS.map(p => `- ${p.name} (${CAT_LABEL[p.cat]}): ${fmt(p.price)} — ${p.desc}`).join('\n');
+// catalogText YA NO usa p.desc (no existe en el catálogo real) — usa marca y categoría.
+const catalogText = PRODUCTS.map(p => `- ${p.name} (${p.brand} · ${CAT_LABEL[p.cat]}): ${fmt(p.price)}`).join('\n');
 
 document.getElementById('lookBtn').addEventListener('click', async () => {
   const event = document.getElementById('eventInput').value.trim();
@@ -500,7 +584,6 @@ document.getElementById('lookBtn').addEventListener('click', async () => {
 
   const budgetLine = budget ? `El presupuesto disponible para este look es de Bs. ${budget}; prioriza productos que en conjunto no lo superen.` : 'No se indicó un presupuesto límite; recomienda lo más adecuado igual.';
 
-  // ✅ PROMPT ESTRICTO: Prohíbe razonamiento previo y obliga a responder con JSON puro
   const promptText = `Eres la asesora de estilo virtual de AUREA, una marca boliviana de belleza (cabello, piel y maquillaje) de Santa Cruz de la Sierra.
 
 INSTRUCCIONES ESTRICTAS:
@@ -544,20 +627,26 @@ Incluye entre 2 y 4 productos del catálogo.`;
     }
 
     const data = await response.json();
-    const textBlock = (data.content || []).map(c => c.text || '').join('\n');
+    const textBlock = (data.content || []).map(c => c.text || '').join('\n').trim();
 
-    // ✅ EXTRACCIÓN ROBUSTA: Buscamos el primer '{' y el último '}' para extraer SOLO el JSON
-    const firstBrace = textBlock.indexOf('{');
-    const lastBrace = textBlock.lastIndexOf('}');
-
-    if (firstBrace === -1 || lastBrace === -1) {
-      throw new Error("La IA no devolvió un JSON válido. Texto recibido: " + textBlock.substring(0, 300));
+    // Con reasoning_format:"hidden" + response_format:json_object en el backend,
+    // textBlock YA debería ser JSON puro. Probamos primero un parseo directo;
+    // solo si falla, recurrimos a extraer entre la primera "{" y la última "}"
+    // como red de seguridad (por si el modelo agrega texto extra alguna vez).
+    let parsed;
+    try {
+      parsed = JSON.parse(textBlock);
+    } catch (directErr) {
+      const clean = textBlock.replace(/```json|```/g, '').trim();
+      const firstBrace = clean.indexOf('{');
+      const lastBrace = clean.lastIndexOf('}');
+      if (firstBrace === -1 || lastBrace === -1) {
+        throw new Error("La IA no devolvió un JSON válido. Texto recibido: " + clean.substring(0, 300));
+      }
+      const jsonText = clean.substring(firstBrace, lastBrace + 1);
+      parsed = JSON.parse(jsonText);
     }
 
-    const jsonText = textBlock.substring(firstBrace, lastBrace + 1);
-    console.log("JSON extraído a parsear:", jsonText);
-
-    const parsed = JSON.parse(jsonText);
     renderResult(parsed);
   } catch(err){
     console.error('Error generando el look:', err);
