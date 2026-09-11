@@ -489,19 +489,14 @@ Responde ÚNICAMENTE con un objeto JSON válido, sin texto adicional ni markdown
 Incluye entre 2 y 4 productos del catálogo.`;
 
   try{
-    const response = await fetch("https://api.anthropic.com/v1/messages", {
+    // ✅ CORREGIDO: Ahora llama a tu propia función en Vercel
+    const response = await fetch("/api/look", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        model: "claude-sonnet-4-6",
-        max_tokens: 1000,
-        messages: [{
-          role: "user",
-          content: [
-            { type: "image", source: { type: "base64", media_type: uploadedImageMediaType, data: uploadedImageBase64 } },
-            { type: "text", text: promptText }
-          ]
-        }]
+        imageBase64: uploadedImageBase64,
+        mediaType: uploadedImageMediaType,
+        promptText: promptText
       })
     });
     const data = await response.json();
