@@ -529,14 +529,29 @@ Incluye entre 2 y 4 productos del catálogo.`;
         promptText: promptText
       })
     });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error("Error del servidor:", response.status, errorText);
+      throw new Error(`Error ${response.status}: ${errorText}`);
+    }
+
     const data = await response.json();
     const textBlock = (data.content || []).map(c => c.text || '').join('\n');
-    const clean = textBlock.replace(/```json|```/g, '').trim();
+
+    // ✅ LIMPIEZA CRÍTICA: Quitamos la etiqueta <think>...</think> que añade Qwen
+    const clean = textBlock
+      .replace(/<think[\s\S]*?<\/think>/gi, '')   // Elimina bloque de pensamiento
+      .replace(/```json|```/g, '')                // Elimina bloques de código markdown
+      .trim();
+
+    console.log("Texto limpio a parsear:", clean); // Para depurar en consola
+
     const parsed = JSON.parse(clean);
     renderResult(parsed);
   } catch(err){
     console.error('Error generando el look:', err);
-    resultPanel.innerHTML = '<p class="error-note">No pudimos generar tu recomendación en este momento. Intenta de nuevo en unos segundos.</p>';
+    resultPanel.innerHTML = `<p class="error-note">No pudimos generar tu recomendación: ${err.message}. Revisa la consola para más detalles.</p>`;
   }
 });
 
