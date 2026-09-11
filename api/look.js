@@ -1,24 +1,28 @@
 export default async function handler(req, res) {
-  // Solo permitir peticiones POST
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Método no permitido' });
   }
 
   try {
     const { imageBase64, mediaType, promptText } = req.body;
-    
-    // Convertimos la imagen a Data URL para Groq
     const imageDataUrl = `data:${mediaType};base64,${imageBase64}`;
 
-    // La clave API de Groq se lee de las variables de entorno de Vercel
+    // Verificamos que la clave existe
+    if (!process.env.GROQ_API_KEY) {
+      console.error("ERROR: GROQ_API_KEY no está definida en las variables de entorno");
+      return res.status(500).json({ error: "GROQ_API_KEY no configurada en Vercel" });
+    }
+
+    console.log("Llamando a Groq con modelo: llama-3.2-11b-vision-preview");
+
     const groqResponse = await fetch("https://api.groq.com/openai/v1/chat/completions", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${process.env.GROQ_API_KEY}` // <-- Clave segura
+        "Authorization": `Bearer ${process.env.GROQ_API_KEY}`
       },
       body: JSON.stringify({
-        model: "llama-3.2-11b-vision-preview", // Modelo con visión de Groq (gratuito)
+        model: "llama-3.2-11b-vision-preview",
         messages: [{
           role: "user",
           content: [
@@ -31,17 +35,15 @@ export default async function handler(req, res) {
       })
     });
 
-    // Verificamos si Groq respondió con error
+    const responseText = await groqResponse.text();
+    console.log("Respuesta de Groq (status " + groqResponse.status + "):", responseText);
+
     if (!groqResponse.ok) {
-      const errorText = await groqResponse.text();
-      console.error("Error de Groq:", groqResponse.status, errorText);
-      return res.status(500).json({ error: `Error de Groq (${groqResponse.status}): ${errorText}` });
+      return res.status(500).json({ error: `Error de Groq (${groqResponse.status}): ${responseText}` });
     }
 
-    const data = await groqResponse.json();
+    const data = JSON.parse(responseText);
     const text = data.choices?.[0]?.message?.content || '';
-    
-    // Devolvemos el formato que espera tu index.html
     return res.status(200).json({ content: [{ text: text }] });
 
   } catch (error) {
